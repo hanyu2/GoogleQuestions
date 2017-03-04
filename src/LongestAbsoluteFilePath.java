@@ -1,3 +1,5 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 //388
@@ -47,6 +49,25 @@ public class LongestAbsoluteFilePath {
 		}
 		return maxLen - 1;
 	}
+	
+	public static int lengthLongestPath2(String input) {
+		int a = "\t\t\t123".lastIndexOf("\t");
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(0); // "dummy" length
+        int maxLen = 0;
+        for(String s:input.split("\n")){
+            int lev = s.lastIndexOf("\t")+1; // number of "\t"
+            while(lev+1<stack.size()) stack.pop(); // find parent
+            int len = stack.peek()+s.length()-lev+1; // remove "/t", add"/"
+            stack.push(len);
+            // check if it is file
+            if(s.contains(".")) maxLen = Math.max(maxLen, len-1); 
+        }
+        return maxLen;
+    }
+	
+	
+	
 	public static void main(String[] args) {
 		String input = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext";
 		String input2 = "a\n\tb.txt\na2\n\tb2.txt";
@@ -54,6 +75,7 @@ public class LongestAbsoluteFilePath {
 		String input4 = "rzzmf\nv\n\tix\n\t\tiklav\n\t\t\ttqse\n\t\t\t\ttppzf\n\t\t\t\t\tzav\n\t\t\t\t\t\tkktei\n\t\t\t\t\t\t\thhmav\n\t\t\t\t\t\t\t\tbzvwf.txt";
 		String input5 = "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext";
 		System.out.println(lengthLongestPath(input5));
+		System.out.println(lengthLongestPath2(input5));
 	}
 }
 /*
